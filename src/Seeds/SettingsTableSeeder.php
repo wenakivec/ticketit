@@ -95,7 +95,7 @@ class SettingsTableSeeder extends Seeder
              * Template adherence: The master blade template to be extended
              * Default: resources/views/master.blade.php
              */
-            'master_template' => 'frontend.index',
+            'master_template' => 'frontend.layouts.ticketit',
             /*
              * Template adherence: The email blade template to be extended
              * Default: ticketit::emails.templates.ticketit
