@@ -56,7 +56,8 @@ class TicketitTableSeeder extends Seeder
 
         for ($a = 1; $a <= $this->agents_qty; $a++) {
             $agent_info = new \App\Models\Access\User\User();
-            $agent_info->name = $faker->name;
+            $agent_info->first_name = $faker->name;
+            $agent_info->last_name = $faker->name;
             $agent_info->email = 'agent'.$agents_counter.$this->email_domain;
             $agent_info->ticketit_agent = 1;
             $agent_info->password = Hash::make($this->default_agent_password);
@@ -100,8 +101,9 @@ class TicketitTableSeeder extends Seeder
         $users_counter = 1;
 
         for ($u = 1; $u <= $this->users_qty; $u++) {
-            $user_info = new \App\User();
-            $user_info->name = $faker->name;
+            $user_info = new \App\Models\Access\User\User();
+            $user_info->first_name = $faker->name;
+            $user_info->last_name = $faker->name;
             $user_info->email = 'user'.$users_counter.$this->email_domain;
             $user_info->ticketit_agent = 0;
             $user_info->password = Hash::make($this->default_user_password);
