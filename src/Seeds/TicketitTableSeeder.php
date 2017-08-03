@@ -55,7 +55,7 @@ class TicketitTableSeeder extends Seeder
         $agents_counter = 1;
 
         for ($a = 1; $a <= $this->agents_qty; $a++) {
-            $agent_info = new \App\User();
+            $agent_info = new \App\Models\Access\User\User();
             $agent_info->name = $faker->name;
             $agent_info->email = 'agent'.$agents_counter.$this->email_domain;
             $agent_info->ticketit_agent = 1;
