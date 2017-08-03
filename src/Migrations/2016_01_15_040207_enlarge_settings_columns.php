@@ -27,8 +27,8 @@ class EnlargeSettingsColumns extends Migration
     public function down()
     {
         Schema::table('ticketit_settings', function (Blueprint $table) {
-            $table->string('value')->change();
-            $table->string('default')->change();
+//            $table->string('value')->change();
+//            $table->string('default')->change();
         });
     }
 }
