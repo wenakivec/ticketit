@@ -203,6 +203,8 @@ class TicketitServiceProvider extends ServiceProvider
                 || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
             $this->loadViewsFrom(__DIR__.'/Views', 'ticketit');
+            $this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/ticketit')], 'views');
+            $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/ticketit')], 'lang');
             $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'db');
 
             $authMiddleware = Helpers\LaravelVersion::authMiddleware();

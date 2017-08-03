@@ -114,6 +114,14 @@ class InstallController extends Controller
 
     public function initialSettings($master = false)
     {
+        Artisan::call('vendor:publish', [
+            '--provider' => 'Kordy\\Ticketit\\TicketitServiceProvider',
+            '--tag'      => ['views'],
+        ]);
+        Artisan::call('vendor:publish', [
+            '--provider' => 'Kordy\\Ticketit\\TicketitServiceProvider',
+            '--tag'      => ['lang'],
+        ]);
         $inactive_migrations = $this->inactiveMigrations();
         if ($inactive_migrations) { // If a migration is missing, do the migrate
             Artisan::call('vendor:publish', [
