@@ -56,8 +56,9 @@ class TicketitTableSeeder extends Seeder
 
         for ($a = 1; $a <= $this->agents_qty; $a++) {
             $agent_info = new \App\Models\Access\User\User();
-            $agent_info->first_name = $faker->name;
-            $agent_info->last_name = $faker->name;
+            $agent_info->name = $faker->name;
+            $agent_info->first_name = substr($agent_info->name,0,strpos($agent_info->name," "));
+            $agent_info->last_name = substr($agent_info->name,strpos($agent_info->name," "));
             $agent_info->email = 'agent'.$agents_counter.$this->email_domain;
             $agent_info->ticketit_agent = 1;
             $agent_info->password = Hash::make($this->default_agent_password);
@@ -102,8 +103,9 @@ class TicketitTableSeeder extends Seeder
 
         for ($u = 1; $u <= $this->users_qty; $u++) {
             $user_info = new \App\Models\Access\User\User();
-            $user_info->first_name = $faker->name;
-            $user_info->last_name = $faker->name;
+            $user_info->name = $faker->name;
+            $user_info->first_name = substr($user_info->name,0,strpos($user_info->name," "));
+            $user_info->last_name = substr($user_info->name,strpos($user_info->name," "));
             $user_info->email = 'user'.$users_counter.$this->email_domain;
             $user_info->ticketit_agent = 0;
             $user_info->password = Hash::make($this->default_user_password);
@@ -122,9 +124,9 @@ class TicketitTableSeeder extends Seeder
                 $category = \Kordy\Ticketit\Models\Category::find($rand_category);
 
                 if (version_compare(app()->version(), '5.2.0', '>=')) {
-                    $agents = $category->agents()->pluck('first_name', 'id')->toArray();
+                    $agents = $category->agents()->pluck('name', 'id')->toArray();
                 } else { // if Laravel 5.1
-                    $agents = $category->agents()->lists('first_name', 'id')->toArray();
+                    $agents = $category->agents()->lists('name', 'id')->toArray();
                 }
 
                 $agent_id = array_rand($agents);
