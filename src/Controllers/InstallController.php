@@ -48,7 +48,7 @@ class InstallController extends Controller
         if (count($this->migrations_tables) == count($this->inactiveMigrations())
             || in_array('2015_10_08_123457_create_settings_table', $this->inactiveMigrations())
         ) {
-            $views_files_list = $this->viewsFilesList('../resources/views/') + ['another' => trans('ticketit::install.another-file')];
+            $views_files_list = $this->viewsFilesList('../resources/views/frontend/') + ['another' => trans('ticketit::install.another-file')];
             $inactive_migrations = $this->inactiveMigrations();
             // if Laravel v5.2 or 5.3
             if (version_compare(app()->version(), '5.2.0', '>=')) {
@@ -77,11 +77,12 @@ class InstallController extends Controller
 
     public function setup(Request $request)
     {
-        $master = $request->master;
-        if ($master == 'another') {
+        if ($request->master == 'another') {
             $another_file = $request->other_path;
             $views_content = strstr(substr(strstr($another_file, 'views/'), 6), '.blade.php', true);
             $master = str_replace('/', '.', $views_content);
+        } else {
+            $master = 'frontend.'.$request->master;
         }
         $this->initialSettings($master);
         $admin_id = $request->admin_id;
