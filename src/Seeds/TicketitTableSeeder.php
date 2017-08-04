@@ -60,9 +60,9 @@ class TicketitTableSeeder extends Seeder
             $agent_info->first_name = substr($agent_info->name,0,strpos($agent_info->name," "));
             $agent_info->last_name = substr($agent_info->name,strpos($agent_info->name," "));
             $agent_info->email = 'agent'.$agents_counter.$this->email_domain;
-            $agent_info->ticketit_agent = 1;
             $agent_info->password = Hash::make($this->default_agent_password);
             $agent_info->save();
+            $agent_info->attachRole(6);
             $agents[$agent_info->id] = $agent_info;
             $agents_counter++;
         }
@@ -107,7 +107,6 @@ class TicketitTableSeeder extends Seeder
             $user_info->first_name = substr($user_info->name,0,strpos($user_info->name," "));
             $user_info->last_name = substr($user_info->name,strpos($user_info->name," "));
             $user_info->email = 'user'.$users_counter.$this->email_domain;
-            $user_info->ticketit_agent = 0;
             $user_info->password = Hash::make($this->default_user_password);
             $user_info->save();
             $users_counter++;

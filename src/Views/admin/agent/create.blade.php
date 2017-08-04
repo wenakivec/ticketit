@@ -28,7 +28,7 @@
                         <td>
                             <div class="checkbox">
                                 <label>
-                                    <input name="agents[]" type="checkbox" value="{{ $user->id }}" {!! $user->ticketit_agent ? "checked" : "" !!}> {{ $user->name }}
+                                    <input name="agents[]" type="checkbox" value="{{ $user->id }}" {!! $user->role(6) ? "checked" : "" !!}> {{ $user->name }}
                                 </label>
                             </div>
                         </td>

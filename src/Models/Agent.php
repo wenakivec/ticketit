@@ -22,9 +22,13 @@ class Agent extends User
     public function scopeAgents($query, $paginate = false)
     {
         if ($paginate) {
-            return $query->where('ticketit_agent', '1')->paginate($paginate, ['*'], 'agents_page');
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '6');
+            })->paginate($paginate, ['*'], 'agents_page');
         } else {
-            return $query->where('ticketit_agent', '1');
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '6');
+            });
         }
     }
 
@@ -41,9 +45,13 @@ class Agent extends User
     public function scopeAdmins($query, $paginate = false)
     {
         if ($paginate) {
-            return $query->where('ticketit_admin', '1')->paginate($paginate, ['*'], 'admins_page');
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '1');
+            })->paginate($paginate, ['*'], 'admins_page');
         } else {
-            return $query->where('ticketit_admin', '1')->get();
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '1');
+            })->get();
         }
     }
 
@@ -60,9 +68,13 @@ class Agent extends User
     public function scopeUsers($query, $paginate = false)
     {
         if ($paginate) {
-            return $query->where('ticketit_agent', '0')->paginate($paginate, ['*'], 'users_page');
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '6');
+            })->paginate($paginate, ['*'], 'users_page');
         } else {
-            return $query->where('ticketit_agent', '0')->get();
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '6');
+            })->get();
         }
     }
 
@@ -78,9 +90,13 @@ class Agent extends User
     public function scopeAgentsLists($query)
     {
         if (version_compare(app()->version(), '5.2.0', '>=')) {
-            return $query->where('ticketit_agent', '1')->pluck('name', 'id')->toArray();
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '6');
+            })->pluck('name', 'users.id')->toArray();
         } else { // if Laravel 5.1
-            return $query->where('ticketit_agent', '1')->lists('name', 'id')->toArray();
+            return $query->whereHas('roles', function ($query){
+                $query->where('roles.id', '6');
+            })->lists('name', 'users.id')->toArray();
         }
     }
 
@@ -93,14 +109,14 @@ class Agent extends User
     {
         if (isset($id)) {
             $user = User::find($id);
-            if ($user->ticketit_agent) {
+            if ($user->hasRole(6)) {
                 return true;
             }
 
             return false;
         }
         if (auth()->check()) {
-            if (auth()->user()->ticketit_agent) {
+            if (auth()->user()->hasRole(6)) {
                 return true;
             }
         }
@@ -113,7 +129,7 @@ class Agent extends User
      */
     public static function isAdmin()
     {
-        return auth()->check() && auth()->user()->ticketit_admin;
+        return auth()->check() && auth()->user()->hasRole(1);
     }
 
     /**
@@ -125,7 +141,7 @@ class Agent extends User
      */
     public static function isAssignedAgent($id)
     {
-        if (auth()->check() && Auth::user()->ticketit_agent) {
+        if (auth()->check() && Auth::user()->hasRole(6)) {
             if (Auth::user()->id == Ticket::find($id)->agent->id) {
                 return true;
             }

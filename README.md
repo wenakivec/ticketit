@@ -52,7 +52,46 @@ Step 2. After install, you have to add this line on your `config/app.php` in Ser
 Kordy\Ticketit\TicketitServiceProvider::class,
 ```
 
-Step 3. [Check if App\User exists](https://github.com/thekordy/ticketit/wiki/Make-sure-that-App%5CUser-exists)
+Step 3. Add to model User.php
+```php
+protected static function boot() {
+        parent::boot();
+
+        static::creating(function($user) {
+            $user->name = $user->fullName;
+        });
+
+        static::updating(function($user) {
+            $user->name = $user->fullName;
+        });
+    }
+```
+Add 'name' to
+```php
+protected $fillable = ['first_name', 'last_name', 'name', 'email', 'password', 'status', 'confirmation_code', 'confirmed'];
+```
+And delete 'name' from
+```php
+protected $appends = ['full_name'];
+```
+
+Step 4. Delete from UserAttribute.php
+```php
+public function getNameAttribute()
+    {
+        return $this->full_name;
+    }
+```
+
+Step 5. Added full name for each generating user in UserTableSeeder.php. For Example:
+```php
+'name' => 'Admin Istrator',
+```
+
+Step 6. Added new column to 2014_10_12_000000_create_users_table.php:
+```php
+$table->string('name');
+```
 
 Step 4. Make sure you have [authentication](https://laravel.com/docs/5.4/authentication#introduction) set up. In 5.2+, you can use `php artisan make:auth`
 

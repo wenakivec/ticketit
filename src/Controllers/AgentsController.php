@@ -63,8 +63,7 @@ class AgentsController extends Controller
     {
         $users = Agent::find($user_ids);
         foreach ($users as $user) {
-            $user->ticketit_agent = true;
-            $user->save();
+            $user->attachRole(6);
             $users_list[] = $user->name;
         }
 
@@ -81,8 +80,7 @@ class AgentsController extends Controller
     public function removeAgent($id)
     {
         $agent = Agent::find($id);
-        $agent->ticketit_agent = false;
-        $agent->save();
+        $agent->detachRole(6);
 
         // Remove him from tickets categories as well
         if (version_compare(app()->version(), '5.2.0', '>=')) {
